@@ -1,1 +1,1 @@
-Log Aggregator
+Log Aggregator Project
