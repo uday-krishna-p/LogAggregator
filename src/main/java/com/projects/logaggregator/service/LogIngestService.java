@@ -34,7 +34,7 @@ public class LogIngestService {
         fields.put("traceId", logEntryDTO.getTraceId() != null ? logEntryDTO.getTraceId() : "");
 
         RecordId recordId = redisTemplate.opsForStream().add(StreamRecords.mapBacked(fields).withStreamKey(STREAM_KEY));
-        metricsTracker.logIngestedToRedis();
+        metricsTracker.incrementLogsIngestedToRedis();
         System.out.println("Pushed to Redis Stream with ID: " + recordId);
     }
 }
