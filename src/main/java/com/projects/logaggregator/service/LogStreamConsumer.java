@@ -59,7 +59,6 @@ public class LogStreamConsumer {
     }
 
     public void pollStream() {
-        while(true){
             try{
                 long startTime = System.currentTimeMillis();
                 List<MapRecord<String, Object, Object>> messages = redisTemplate.opsForStream().read(
@@ -77,7 +76,6 @@ public class LogStreamConsumer {
             }catch (Exception e){
                 System.out.println("Error while reading from Redis Stream" + e.getMessage());
             }
-        }
     }
 
     @PreDestroy

@@ -1,5 +1,6 @@
 package com.projects.logaggregator.controller;
 
+import com.projects.logaggregator.dto.AggregatedMetricsHistoryDto;
 import com.projects.logaggregator.metrics.MetricsTracker;
 import com.projects.logaggregator.model.MetricSnapshotEntity;
 import com.projects.logaggregator.service.MetricsService;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -25,7 +27,7 @@ public class MetricsController {
         this.metricsService = metricsService;
     }
 
-    @GetMapping("/history")
+    @GetMapping("/raw-history")
     public List<MetricSnapshotEntity> getMetricSnapshots(
             @RequestParam(required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
@@ -37,5 +39,20 @@ public class MetricsController {
     ) {
 
         return metricsService.getMetricSnapshots(from, to);
+    }
+
+    @GetMapping("history")
+    public AggregatedMetricsHistoryDto getAggregatedMetricSnapshots(
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            Instant from,
+
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            Instant to,
+
+            @RequestParam(defaultValue = "60") long bucketSizeSeconds
+    ){
+        return metricsService.getAggregatedMetrics(from, to, bucketSizeSeconds);
     }
 }

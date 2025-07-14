@@ -11,7 +11,7 @@ public class MetricsScheduler {
 
     private final MetricsService metricsService;
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 600000)
     public void collectMetrics() {
         metricsService.getMetricsData();
     }
